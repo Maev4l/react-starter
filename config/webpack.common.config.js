@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 const pkg = require('../package.json');
@@ -25,7 +26,9 @@ const copyWebPackPluginConfig = new CopyWebpackPlugin([
   },
 ]);
 
-const plugins = [htmlWebpackPluginConfig, copyWebPackPluginConfig];
+const miniExtractCssPluginConfig = new MiniCssExtractPlugin({ filename: '[name].css' });
+
+const plugins = [htmlWebpackPluginConfig, copyWebPackPluginConfig, miniExtractCssPluginConfig];
 
 module.exports = {
   entry: {
@@ -43,13 +46,14 @@ module.exports = {
       {
         test: /\.css$/,
         include: /node_modules/,
-        use: [
-          'style-loader',
-          'css-loader',
-          // { loader: 'css-loader', options: { camelCase: true } },
-        ],
+        use: ['style-loader', 'css-loader'],
       },
       /** <== For all .css files in node_modules */
+      {
+        test: /\.(sa|sc|c)ss$/,
+        exclude: /node_modules/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
       {
         test: /\.png$/,
         loader: 'url-loader?limit=100000&mimetype=image/png',

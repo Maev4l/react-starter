@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --port 5001 --config ./config/webpack.dev.config.js",
+    "build": "webpack --config ./config/webpack.prod.config.js",
     "lint": "eslint src",
     "pretty": "prettier src --write \"src/**/*\""
   },

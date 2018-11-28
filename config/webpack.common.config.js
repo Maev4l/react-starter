@@ -1,7 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer');
 const path = require('path');
 
 const pkg = require('../package.json');
@@ -28,7 +30,22 @@ const copyWebPackPluginConfig = new CopyWebpackPlugin([
 
 const miniExtractCssPluginConfig = new MiniCssExtractPlugin({ filename: '[name].css' });
 
-const plugins = [htmlWebpackPluginConfig, copyWebPackPluginConfig, miniExtractCssPluginConfig];
+/** ===> To avoid warning with semantic ui css warning */
+const providePluginConfig = new webpack.ProvidePlugin({
+  $: 'jquery',
+  jQuery: 'jquery',
+});
+/** <=== To avoid warning with semantic ui css warning */
+
+const bundleAnalyzerPluginConfig = new BundleAnalyzerPlugin.BundleAnalyzerPlugin();
+
+const plugins = [
+  htmlWebpackPluginConfig,
+  copyWebPackPluginConfig,
+  providePluginConfig,
+  miniExtractCssPluginConfig,
+  bundleAnalyzerPluginConfig,
+];
 
 module.exports = {
   entry: {

@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
@@ -13,35 +14,39 @@ const cleanWebpackPluginConfig = new CleanWebpackPlugin([DIST_DIR], {
   verbose: true,
 });
 
-const plugins = [cleanWebpackPluginConfig];
-
-module.exports = merge(common, {
-  mode: 'production',
-  devtool: 'source-map',
-  optimization: {
-    minimizer: [
-      new UglifyJSPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: {
-            inline: false,
+module.exports = (env) =>
+  merge(common, {
+    mode: 'production',
+    devtool: 'source-map',
+    optimization: {
+      minimizer: [
+        new UglifyJSPlugin({
+          sourceMap: true,
+          uglifyOptions: {
+            compress: {
+              inline: false,
+            },
           },
-        },
-      }),
-      new OptimizeCSSAssetsPlugin({}),
-    ],
-    runtimeChunk: false,
-    splitChunks: {
-      cacheGroups: {
-        default: false,
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
-          chunks: 'all',
-          minChunks: 2,
+        }),
+        new OptimizeCSSAssetsPlugin({}),
+      ],
+      runtimeChunk: false,
+      splitChunks: {
+        cacheGroups: {
+          default: false,
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendor',
+            chunks: 'all',
+            minChunks: 2,
+          },
         },
       },
     },
-  },
-  plugins,
-});
+    plugins: [
+      cleanWebpackPluginConfig,
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(env.mode),
+      }),
+    ],
+  });

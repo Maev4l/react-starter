@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 5001 --config ./config/webpack.dev.config.js",
-    "build": "webpack --config ./config/webpack.prod.config.js",
+    "start": "webpack-dev-server --port 5001 --config ./config/webpack.dev.config.js --hot",
+    "build": "webpack --config ./config/webpack.prod.config.js --env.mode production",
     "lint": "eslint src",
     "pretty": "prettier src --write \"src/**/*\""
   },
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "react": "^16.6.3",
+    "react-hot-loader": "^4.3.12",
     "react-dom": "^16.6.3",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1"
@@ -44,6 +45,7 @@
     "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.1.2",
     "webpack": "^4.26.0",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4"

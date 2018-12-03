@@ -50,7 +50,11 @@ const plugins = [
 module.exports = {
   entry: {
     main: path.join(SRC_DIR, 'index.js'),
-    vendor: Object.keys(pkg.dependencies),
+  },
+  output: {
+    path: DIST_DIR,
+    filename: '[name].[hash].js',
+    chunkFilename: '[name].[hash].js',
   },
   module: {
     rules: [
